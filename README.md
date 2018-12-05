@@ -1,4 +1,4 @@
-# Project Name
+# What makes student perform well?
 **Authors**: Binal Modi (bjm470), Apurv Srivastav (as11419)
 
 Group 17 
