@@ -13,6 +13,6 @@ To measure performance, we will consider average grades combining maths and Port
 
 
 ## More
-[DEMO](https://nyu-vis-fall2018.github.io/index.html/)
+[DEMO]((https://nyu-vis-fall2018.github.io/project-template/))
 
 [Project Descrioption](project.pdf)
