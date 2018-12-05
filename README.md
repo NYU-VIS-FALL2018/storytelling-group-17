@@ -13,6 +13,6 @@ To measure performance, we will consider average grades combining maths and Port
 
 
 ## More
-[DEMO](https://github.com/NYU-VIS-FALL2018/storytelling-group-17-students-performance.git)
+[DEMO](https://nyu-vis-fall2018.github.io/index.html/)
 
 [Project Descrioption](project.pdf)
