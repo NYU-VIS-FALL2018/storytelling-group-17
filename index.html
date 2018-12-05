@@ -32,19 +32,19 @@
         .box {
             display: inline-block;
             height: 20px;
-            width: 20px;
-            border: 2px solid;
+            width: 40px;
+            border: 1px solid;
         }
         
         
     </style>
     <body>
         <h1>What makes student performing well?</h1>
-        <div id="container"></div>
-       <div class="mainView">
+        <div class="mainView">
             <div>
                 <h2>Family Background</h2>
                 <p>After we looked into the family bacgrounds of students with differnet grades</p>
+                <div id="container"></div>
                 <div id='Pie'></div>
             </div>
         </div>
@@ -65,14 +65,36 @@
         }
         
         
+        function colorize(legendNcolor, divId) {
+            var container = document.getElementById(divId);
+            //var colorList = {"Grade D": 'red', "Grade C": 'green', "Grade A": 'orange', "Grade B": 'blue'};
+        
+            for (var key in legendNcolor) {
+                var boxContainer = document.createElement("DIV");
+                var box = document.createElement("DIV");
+                var label = document.createElement("SPAN");
+
+                label.innerHTML = key;
+                box.className = "box";
+                box.style.backgroundColor = legendNcolor[key];
+
+                boxContainer.appendChild(label);
+                boxContainer.appendChild(box);
+                
+                container.appendChild(boxContainer);
+
+            }
+        }
+        
         function drawPieChart(data) {
             
             var w = 300,
                 h = 300,
                 r = Math.min(w, h) / 2;
 
+            var legendColor = {}   // "Grade A": #ff3432
             var color = d3.scaleOrdinal(d3.schemeCategory10);
-
+            
             var pie = d3.pie()
                 .value(function(d) { return d.Count; })(data);
 
@@ -98,13 +120,17 @@
             
             g.append("path")
                 .attr("d", arc)
-                .style("fill", function(d) { return color(d.data.Grade);});
+                .style("fill", function(d) { 
+                    legendColor["Grade " + d.data.Grade] = color(d.data.Grade);
+                    return color(d.data.Grade);
+                });
             
             g.append("text")
                 .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-                .text(function(d) { return (d.data.Count+ "%");})
+                .text(function(d) { return (d.data.Count);})
                 .style("fill", "#fff");
-
+            
+            colorize(legendColor, 'container')
 
         }
           
@@ -121,7 +147,7 @@
                 }
                 currentData.Count += 1
                 res_0[d.CatG3] = currentData
-                
+                numRecords += 1
                 return res_0
             }, {})
             //to get the distribution of grades for Fedu = 1 
@@ -142,10 +168,10 @@
             res_0["B"].Count = Math.round(res_0["B"].Count*100/numRecords)
             res_0["C"].Count = Math.round(res_0["C"].Count*100/numRecords)
             res_0["D"].Count = Math.round(res_0["D"].Count*100/numRecords)
-            console.log(res_0["B"].Count)
+            //console.log(res_0["B"].Count)
             res_0 = Object.keys(res_0).map(key => res_0[key]);
             res_1 = Object.keys(res_1).map(key => res_1[key]);
-            console.log(res_0)
+            //console.log(res_0)
             drawPieChart(res_0)
             return [res_0,res_1];
                   
@@ -199,30 +225,11 @@
             //let temp = groupByFedu(studentDataset);
             //console.log(temp)
         }
-        var colorList = {"Grade D": 'red', "Grade C": 'green', "Grade A": 'orange', "Grade B": 'blue'};
-
-        colorize = function(colorList) {
-            var container = document.getElementById('container');
         
-            for (var key in colorList) {
-                var boxContainer = document.createElement("DIV");
-                var box = document.createElement("DIV");
-                var label = document.createElement("SPAN");
-
-                label.innerHTML = key;
-                box.className = "box";
-                box.style.backgroundColor = colorList[key];
-
-                boxContainer.appendChild(label);
-                boxContainer.appendChild(box);
-                
-                container.appendChild(boxContainer);
-
-            }
-        }
+        
         
 
-        colorize(colorList);
+        //colorize(colorList);
         loadData().then(showData);
         
     </script>
