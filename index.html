@@ -1,147 +1,216 @@
+<html>
+    <head>
+        <title>Storytelling project</title>
+        <script src="d3.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        
+        
+    </head>
+    <style>
+        body {
+            background-color: lightblue;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        
+        
+        h1 {
+            color: white;
+            padding: 5px;
+        }
+        
+        .arc text {
+            font: 12px arial;
+            text-anchor: middle;
+        }
 
+        .arc path {
+            stroke: #fff;
+        }  
 
-var margin = { top: 30, right: 50, bottom: 40, left: 50 };
-var width = 960 - margin.left - margin.right;
-var height = 500 - margin.top - margin.bottom;
+        .title {
+           fill: green;
+           font-weight: italic;
+        }
+        .box {
+            display: inline-block;
+            height: 20px;
+            width: 40px;
+            border: 1px solid;
+        }
+                
+        .label {
+            font-size: 15px;
+        }
 
-var svg = d3.select("body")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .legend{
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
 
-var xscale = d3.scaleLinear()
-    .domain([0,800])
-    .range([0,width]);
+        .legend text,
+        .axis text {
+            font-size: 13px;
+            fill: #333;
+        }
 
-var yscale = d3.scaleLinear()
-    .range([height,0]);
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke-width:1px;
+            stroke: #e7e7e7;
+        }
 
-var radius = d3.scaleSqrt()
-    .range([2,8]);
+        circle {
+            stroke: #fff;
+        }
 
-var xAxis = d3.axisBottom()
-    .tickSize(-height)
-    .scale(xscale);
+        .bubble {
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
 
-var yAxis = d3.axisLeft()
-    .tickSize(-width)
-    .scale(yscale)
+        .bubble text {
+            opacity: 0;
+            pointer-events: none;
+            font-size: 12px;
+        }
 
-var color = d3.scaleCategory20();
+        .bubble:hover text {
+            opacity: 1;
+        }
 
-d3.csv("Baseball.csv", function(error, data) {
-    console.log(data);
-    // data pre-processing
-    data.forEach(function(d) {
-    d.y = +d["runs86"];
-    d.x = +d["atbat86"];
-    d.r = +d["homer86"];
-    });
+        .bubble:hover circle {
+            fill-opacity: 1;
+        }
 
-    data.sort(function(a,b) { return b.r - a.r; });
+        .chart-wrapper {
+            max-width: 950px;
+            min-width: 304px;
+            margin: 0 auto;
+            /*background-color: #FAF7F7;*/
+        }
 
-    yscale.domain(d3.extent(data, function(d) {
-    return d.y;
-    })).nice();
+        .chart-wrapper .inner-wrapper {
+            position: relative;
+            padding-bottom: 50%;
+            width: 100%;
+        }
 
-    radius.domain(d3.extent(data, function(d) {
-    return d.r;
-    })).nice();
+        .chart-wrapper .outer-box {
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+        }
 
-    svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .attr("class", "x axis")
-    .call(xAxis);
+        .chart-wrapper .inner-box {
+            width: 100%;
+            height: 100%;
+        }
 
-    svg.append("g")
-    .attr("transform", "translate(0,0)")
-    .attr("class", "y axis")
-    .call(yAxis);
+        .chart-wrapper text {
+        font-family: sans-serif;
+        font-size: 11px;
+        }
 
-    var group = svg.selectAll("g.bubble")
-    .data(data)
-    .enter().append("g")
-    .attr("class", "bubble")
-    .attr("transform", function(d) {
-        return "translate(" + xscale(d.x) + "," + yscale(d.y) + ")"
-    });
+        .chart-wrapper p {
+            font-size: 16px;
+            margin-top:5px;
+            margin-bottom: 40px;
+        }
 
-    group
-    .append("circle")
-    .attr("r", function(d) { return radius(d.r);  })
-    .style("fill", function(d) {
-        return color(d["team86"]);
-    })
+        .chart-wrapper .axis path,
+        .chart-wrapper .axis line {
+            fill: none;
+            stroke: #1F1F2E;
+            stroke-opacity: 0.7;
+            shape-rendering: crispEdges;
 
-    group
-    .append("text")
-    .attr("x", function(d) { return radius(d.r); })
-    .attr("alignment-baseline", "middle")
-    .text(function(d) {
-        return d["name1"] + " " + d["name2"];  
-    });
+        }
+        .chart-wrapper .axis path {
+        stroke-width: 2px;
+        }
 
-    svg.append("text")
-    .attr("x", 6)
-    .attr("y", -2)
-    .attr("class", "label")
-    .text("Runs (86)");
+        .chart-wrapper .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 5px;
+        }
 
-    svg.append("text")
-    .attr("x", width-2)
-    .attr("y", height-6)
-    .attr("text-anchor", "end")
-    .attr("class", "label")
-    .text("At Bats (86)");
+        .chart-wrapper .legend  {
+            min-width: 200px;
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            font-size: 16px;
+            padding: 10px 40px;
+        }
+        .chart-wrapper .legend > div {
+            margin: 0px 25px 10px 0px;
+            flex-grow: 0;
+        }
+        .chart-wrapper .legend p {
+            display:inline;
+            font-size: 0.8em;
+            font-family: sans-serif;
+            font-weight: 600;
+        }
+        .chart-wrapper .legend .series-marker {
+            height: 1em;
+            width: 1em;
+            border-radius: 35%;
+            background-color: crimson;
+            display: inline-block;
+            margin-right: 4px;
+            margin-bottom: -0.16rem;
+        }
 
-    // adding vertical line
-    svg.append("line")
-    .attr("x1", 300)  //<<== change your code here
-    .attr("y1", 0)
-    .attr("x2", 305)  //<<== and here
-    .attr("y2", height - margin.top - margin.bottom)
-    .style("stroke-width", 2)
-    .style("stroke", "red")
-    .style("fill", "none");
-    // adding Vertical line end
+        .chart-wrapper .overlay {
+        fill: none;
+        pointer-events: all;
+        }
 
-    var legend = svg.selectAll(".legend")
-        .data(color.domain())
-    .enter().append("g")
-        .attr("class", "legend")
-        .attr("transform", function(d, i) { return "translate(2," + i * 14 + ")"; });
+        .chart-wrapper .focus circle {
+        fill: crimson;
+        stroke: crimson;
+        stroke-width: 2px;
+        fill-opacity: 15%;
+        }
+        .chart-wrapper .focus rect {
+            fill: lightblue;
+            opacity: 0.4;
+            border-radius: 2px;
+        }
+        .chart-wrapper .focus.line {
+            stroke: steelblue;
+            stroke-dasharray: 2,5;
+            stroke-width: 2;
+            opacity: 0.5;
+        }
+        @media (max-width:500px){
+            .chart-wrapper .line {stroke-width: 3px;}
+            .chart-wrapper .legend {font-size: 14px;}
+        }
+    </style>
+    <body>
+        <h1>What makes student performing well?</h1>
+        <div class="mainView">
+            <div>
+                <h2>Family Background</h2>
+                <p>After we looked into the family bacgrounds of students with differnet grades</p>
 
-    legend.append("rect")
-        .attr("x", width)
-        .attr("width", 12)
-        .attr("height", 12)
-        .style("fill", color);
+                <svg width="500" height="500"></svg>
+                <script src="bar.js" charset="utf-8"></script>
+            </div>
+            <div>
+                <script src="//d3js.org/d3.v4.0.0-alpha.35.min.js"></script>
+                <script src="Scatter2.js" charset="utf-8"></script>
+            </div>
+            <div class="chart-wrapper" id="chart-line1">
+                <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+                
+                <script src="multiline.js" charset="utf-8"></script>
+            </div>
+        </div>
+        
+    </body>
 
-    legend.append("text")
-        .attr("x", width + 16)
-        .attr("y", 6)
-        .attr("dy", ".35em")
-        .style("text-anchor", "start")
-        .text(function(d) { return d; });
-
-    legend.on("mouseover", function(type) {
-        d3.selectAll(".legend")
-        .style("opacity", 0.1);
-        d3.select(this)
-        .style("opacity", 1);
-        d3.selectAll(".bubble")
-        .style("opacity", 0.1)
-        .filter(function(d) { return d["team86"] == type; })
-        .style("opacity", 1);
-    })
-    .on("mouseout", function(type) {
-        d3.selectAll(".legend")
-        .style("opacity", 1);
-        d3.selectAll(".bubble")
-        .style("opacity", 1);
-    });
-
-    
-});
+</html>
