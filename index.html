@@ -1,236 +1,147 @@
-<html>
-    <head>
-        <title>Storytelling project</title>
-        <script src="d3.js"></script>
-        
-    </head>
-    <style>
-        body {
-            background-color: lightblue;
-            font-family: Helvetica, Arial, sans-serif;
-        }
-        
-        
-        h1 {
-            color: white;
-            padding: 5px;
-        }
-        
-        .arc text {
-            font: 12px arial;
-            text-anchor: middle;
-        }
 
-        .arc path {
-            stroke: #fff;
-        }  
 
-        .title {
-           fill: green;
-           font-weight: italic;
-        }
-        .box {
-            display: inline-block;
-            height: 20px;
-            width: 40px;
-            border: 1px solid;
-        }
-        
-        
-    </style>
-    <body>
-        <h1>What makes student performing well?</h1>
-        <div class="mainView">
-            <div>
-                <h2>Family Background</h2>
-                <p>After we looked into the family bacgrounds of students with differnet grades</p>
-                <div id="container"></div>
-                <div id='Pie'></div>
-            </div>
-        </div>
-    </body>
+var margin = { top: 30, right: 50, bottom: 40, left: 50 };
+var width = 960 - margin.left - margin.right;
+var height = 500 - margin.top - margin.bottom;
+
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var xscale = d3.scaleLinear()
+    .domain([0,800])
+    .range([0,width]);
+
+var yscale = d3.scaleLinear()
+    .range([height,0]);
+
+var radius = d3.scaleSqrt()
+    .range([2,8]);
+
+var xAxis = d3.axisBottom()
+    .tickSize(-height)
+    .scale(xscale);
+
+var yAxis = d3.axisLeft()
+    .tickSize(-width)
+    .scale(yscale)
+
+var color = d3.scaleCategory20();
+
+d3.csv("Baseball.csv", function(error, data) {
+    console.log(data);
+    // data pre-processing
+    data.forEach(function(d) {
+    d.y = +d["runs86"];
+    d.x = +d["atbat86"];
+    d.r = +d["homer86"];
+    });
+
+    data.sort(function(a,b) { return b.r - a.r; });
+
+    yscale.domain(d3.extent(data, function(d) {
+    return d.y;
+    })).nice();
+
+    radius.domain(d3.extent(data, function(d) {
+    return d.r;
+    })).nice();
+
+    svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .attr("class", "x axis")
+    .call(xAxis);
+
+    svg.append("g")
+    .attr("transform", "translate(0,0)")
+    .attr("class", "y axis")
+    .call(yAxis);
+
+    var group = svg.selectAll("g.bubble")
+    .data(data)
+    .enter().append("g")
+    .attr("class", "bubble")
+    .attr("transform", function(d) {
+        return "translate(" + xscale(d.x) + "," + yscale(d.y) + ")"
+    });
+
+    group
+    .append("circle")
+    .attr("r", function(d) { return radius(d.r);  })
+    .style("fill", function(d) {
+        return color(d["team86"]);
+    })
+
+    group
+    .append("text")
+    .attr("x", function(d) { return radius(d.r); })
+    .attr("alignment-baseline", "middle")
+    .text(function(d) {
+        return d["name1"] + " " + d["name2"];  
+    });
+
+    svg.append("text")
+    .attr("x", 6)
+    .attr("y", -2)
+    .attr("class", "label")
+    .text("Runs (86)");
+
+    svg.append("text")
+    .attr("x", width-2)
+    .attr("y", height-6)
+    .attr("text-anchor", "end")
+    .attr("class", "label")
+    .text("At Bats (86)");
+
+    // adding vertical line
+    svg.append("line")
+    .attr("x1", 300)  //<<== change your code here
+    .attr("y1", 0)
+    .attr("x2", 305)  //<<== and here
+    .attr("y2", height - margin.top - margin.bottom)
+    .style("stroke-width", 2)
+    .style("stroke", "red")
+    .style("fill", "none");
+    // adding Vertical line end
+
+    var legend = svg.selectAll(".legend")
+        .data(color.domain())
+    .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) { return "translate(2," + i * 14 + ")"; });
+
+    legend.append("rect")
+        .attr("x", width)
+        .attr("width", 12)
+        .attr("height", 12)
+        .style("fill", color);
+
+    legend.append("text")
+        .attr("x", width + 16)
+        .attr("y", 6)
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .text(function(d) { return d; });
+
+    legend.on("mouseover", function(type) {
+        d3.selectAll(".legend")
+        .style("opacity", 0.1);
+        d3.select(this)
+        .style("opacity", 1);
+        d3.selectAll(".bubble")
+        .style("opacity", 0.1)
+        .filter(function(d) { return d["team86"] == type; })
+        .style("opacity", 1);
+    })
+    .on("mouseout", function(type) {
+        d3.selectAll(".legend")
+        .style("opacity", 1);
+        d3.selectAll(".bubble")
+        .style("opacity", 1);
+    });
+
     
-
-    <script>
-        
-        let studentDataset = {}
-        
-        function loadData() {
-            return Promise.all([
-                d3.csv("cleanedStudent.csv"),
-            ]).then(datasets => {
-                studentDataset = datasets[0];
-                return studentDataset;
-            })
-        }
-        
-        
-        function colorize(legendNcolor, divId) {
-            var container = document.getElementById(divId);
-            //var colorList = {"Grade D": 'red', "Grade C": 'green', "Grade A": 'orange', "Grade B": 'blue'};
-        
-            for (var key in legendNcolor) {
-                var boxContainer = document.createElement("DIV");
-                var box = document.createElement("DIV");
-                var label = document.createElement("SPAN");
-
-                label.innerHTML = key;
-                box.className = "box";
-                box.style.backgroundColor = legendNcolor[key];
-
-                boxContainer.appendChild(label);
-                boxContainer.appendChild(box);
-                
-                container.appendChild(boxContainer);
-
-            }
-        }
-        
-        function drawPieChart(data) {
-            
-            var w = 300,
-                h = 300,
-                r = Math.min(w, h) / 2;
-
-            var legendColor = {}   // "Grade A": #ff3432
-            var color = d3.scaleOrdinal(d3.schemeCategory10);
-            
-            var pie = d3.pie()
-                .value(function(d) { return d.Count; })(data);
-
-            var arc = d3.arc()
-               .outerRadius(r - 10)
-               .innerRadius(0);
-            
-            var labelArc = d3.arc()
-                .outerRadius(r - 40)
-                .innerRadius(r - 40);
-            
-            var svg = d3.select("#Pie")
-                .append("svg")
-                .attr("width", w)
-                .attr("height", h)
-                .append("g")
-                .attr("transform", "translate(" + w/2 + "," + h/2 +")");
-             
-            var g = svg.selectAll("arc")
-                .data(pie)
-                .enter().append("g")
-                .attr("class", "arc");
-            
-            g.append("path")
-                .attr("d", arc)
-                .style("fill", function(d) { 
-                    legendColor["Grade " + d.data.Grade] = color(d.data.Grade);
-                    return color(d.data.Grade);
-                });
-            
-            g.append("text")
-                .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-                .text(function(d) { return (d.data.Count);})
-                .style("fill", "#fff");
-            
-            colorize(legendColor, 'container')
-
-        }
-          
-        
-        function groupByFedu(data) {
-            const Fedu0 = data.filter(student => student.Fedu ==0)
-            const Fedu1 = data.filter(student => student.Fedu == 1)
-          //to get the distribution of grades for Fedu = 0  
-            var numRecords = 0
-            let res_0= Fedu0.reduce((res_0, d) => {
-                let currentData = res_0[d.CatG3] || {
-                    "Grade":d.CatG3,
-                    "Count": 0
-                }
-                currentData.Count += 1
-                res_0[d.CatG3] = currentData
-                numRecords += 1
-                return res_0
-            }, {})
-            //to get the distribution of grades for Fedu = 1 
-            var numRecords = 0
-            let res_1= Fedu1.reduce((res_1, d) => {
-                let currentData = res_1[d.CatG3] || {
-                    "Grade":d.CatG3,
-                    "Count": 0
-                }
-                currentData.Count += 1
-                numRecords += 1
-                res_1[d.CatG3] = currentData
-                
-                return res_1
-            }, {})
-
-            res_0["A"].Count = Math.round(res_0["A"].Count*100/numRecords)
-            res_0["B"].Count = Math.round(res_0["B"].Count*100/numRecords)
-            res_0["C"].Count = Math.round(res_0["C"].Count*100/numRecords)
-            res_0["D"].Count = Math.round(res_0["D"].Count*100/numRecords)
-            //console.log(res_0["B"].Count)
-            res_0 = Object.keys(res_0).map(key => res_0[key]);
-            res_1 = Object.keys(res_1).map(key => res_1[key]);
-            //console.log(res_0)
-            drawPieChart(res_0)
-            return [res_0,res_1];
-                  
-        }
-
-        function groupByMedu(data) {
-            const Medu0 = data.filter(student => student.Medu ==0)
-            const Medu1 = data.filter(student => student.Medu == 1)
-          //to get the distribution of grades for Medu = 0  
-            let res_0= Medu0.reduce((res_0, d) => {
-                let currentData = res_0[d.CatG3] || {
-                    "Grade":d.CatG3,
-                    "Count": 0
-                }
-                currentData.Count += 1
-                
-                res_0[d.CatG3] = currentData
-                
-                return res_0
-            }, {})
-            //to get the distribution of grades for Medu = 1 
-            let res_1= Medu1.reduce((res_1, d) => {
-                let currentData = res_1[d.CatG3] || {
-                    "Grade":d.CatG3,
-                    "Count": 0
-                }
-                currentData.Count += 1
-
-                res_1[d.CatG3] = currentData
-                
-                return res_1
-            }, {})
-
-            res_0 = Object.keys(res_0).map(key => res_0[key]);
-            res_1 = Object.keys(res_1).map(key => res_1[key]);
-            return [res_0,res_1];
-                  
-        }
-        
-        
-        
-        function showData() {
-        //Get the routes from our store variable
-            //console.log(studentDataset);
-            let Fedu0,Fedu1 = groupByFedu(studentDataset)
-            //console.log(Fedu0);
-            //console.log(Fedu1);
-            let Medu0,Medu1 = groupByMedu(studentDataset)
-            //console.log(Medu0);
-            //console.log(Medu1);
-            //let temp = groupByFedu(studentDataset);
-            //console.log(temp)
-        }
-        
-        
-        
-
-        //colorize(colorList);
-        loadData().then(showData);
-        
-    </script>
-</html>
+});
