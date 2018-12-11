@@ -4,7 +4,7 @@ var margin = { top: 40, right: 90, bottom: 90, left: 90 };
 var width = 1000 - margin.left - margin.right;
 var height = 450 - margin.top - margin.bottom;
 
-var svg = d3.select("body")
+var svgFamEdu = d3.select("#chart-scatter")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -53,17 +53,17 @@ d3.csv("fedu.csv", function(error, data) {
     return d.r;
     })).nice();
 
-    svg.append("g")
+    svgFamEdu.append("g")
     .attr("transform", "translate(0," + height + ")")
     .attr("class", "x axis")
     .call(xAxis);
 
-    svg.append("g")
+    svgFamEdu.append("g")
     .attr("transform", "translate(0,0)")
     .attr("class", "y axis")
     .call(yAxis);
 
-    var group = svg.selectAll("g.bubble")
+    var group = svgFamEdu.selectAll("g.bubble")
     .data(data)
     .enter().append("g")
     .attr("class", "bubble")
@@ -86,13 +86,13 @@ d3.csv("fedu.csv", function(error, data) {
         return (Math.round(d["Number of Records"]*100)/100 + " %");  
     });
 
-    svg.append("text")
+    svgFamEdu.append("text")
     .attr("x", 6)
     .attr("y", -2)
     .attr("class", "label")
     .text("Father's education and Grades");
 
-    svg.append('text')
+    svgFamEdu.append('text')
     .attr('class', 'label')
     .attr('x', -(height) - margin)
     .attr('y', margin)
@@ -100,7 +100,32 @@ d3.csv("fedu.csv", function(error, data) {
     .attr('text-anchor', 'end')
     .text('Grades')
 
-    var legend = svg.selectAll(".legend")
+    // +add vertical line
+    //source: https://stackoverflow.com/questions/26418777/draw-a-vertical-line-representing-the-current-date-in-d3-gantt-chart
+    svgFamEdu.append("line")
+        .attr("x1", 500)
+        .attr("y1", height - margin.top*18.5)  //top point
+        .attr("x2", 500)
+        .attr("y2", height - margin.bottom*10.5) //bottom point
+        .style("stroke-width", 3)
+        .style("stroke", "red")
+        .style("fill", "none");
+    // -add vertical line
+
+    // +add vertical line
+    //source: https://stackoverflow.com/questions/26418777/draw-a-vertical-line-representing-the-current-date-in-d3-gantt-chart
+    svgFamEdu.append("line")
+        .attr("x1", 400)
+        .attr("y1", height - margin.top*10.4)  //top point
+        .attr("x2", 400)
+        .attr("y2", height - margin.top*13.3) //bottom point
+        .style("stroke-width", 3)
+        .style("stroke", "red")
+        .style("fill", "none");
+    // -add vertical line
+
+
+    var legend = svgFamEdu.selectAll(".legend")
         .data(color.domain())
     .enter().append("g")
         .attr("class", "legend")
