@@ -1,8 +1,8 @@
 
 
-var margin = { top: 30, right: 50, bottom: 40, left: 50 };
-var width = 960 - margin.left - margin.right;
-var height = 500 - margin.top - margin.bottom;
+var margin = { top: 40, right: 90, bottom: 90, left: 90 };
+var width = 1000 - margin.left - margin.right;
+var height = 450 - margin.top - margin.bottom;
 
 var svg = d3.select("body")
     .append("svg")
@@ -12,40 +12,43 @@ var svg = d3.select("body")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var xscale = d3.scaleLinear()
-    .domain([0,800])
+    .domain([-1,20])
     .range([0,width]);
 
 var yscale = d3.scaleLinear()
+    .domain([-1,2])
     .range([height,0]);
 
 var radius = d3.scaleSqrt()
-    .range([2,8]);
+    .range([5,12]);
 
-var xAxis = d3.axisBottom()
+var xAxis = d3.axisBottom(xscale)
     .tickSize(-height)
     .scale(xscale);
 
-var yAxis = d3.axisLeft()
+var yAxis = d3.axisLeft(yscale)
     .tickSize(-width)
     .scale(yscale)
+    .ticks(3)   //https://stackoverflow.com/questions/42058460/d3-scatter-plot-y-axis-numbers-display-incomplete
+    .tickValues([0,1])   // https://stackoverflow.com/questions/44872048/d3-js-how-can-i-create-an-axis-with-custom-labels-and-customs-ticks
 
 var color = d3.scaleCategory20();
 
-d3.csv("Baseball.csv", function(error, data) {
+d3.csv("fedu.csv", function(error, data) {
     console.log(data);
     // data pre-processing
     data.forEach(function(d) {
-    d.y = +d["runs86"];
-    d.x = +d["atbat86"];
-    d.r = +d["homer86"];
+    d.y = +d["Fedu"];
+    d.x = +d["G31"];
+    d.r = +d["Number of Records"];
     });
 
     data.sort(function(a,b) { return b.r - a.r; });
-
+/*
     yscale.domain(d3.extent(data, function(d) {
     return d.y;
     })).nice();
-
+*/
     radius.domain(d3.extent(data, function(d) {
     return d.r;
     })).nice();
@@ -70,9 +73,9 @@ d3.csv("Baseball.csv", function(error, data) {
 
     group
     .append("circle")
-    .attr("r", function(d) { return radius(d.r);  })
+    .attr("r", function(d) { return radius(d.r*5);  })
     .style("fill", function(d) {
-        return color(d["team86"]);
+        return color(d[""]);
     })
 
     group
@@ -80,32 +83,22 @@ d3.csv("Baseball.csv", function(error, data) {
     .attr("x", function(d) { return radius(d.r); })
     .attr("alignment-baseline", "middle")
     .text(function(d) {
-        return d["name1"] + " " + d["name2"];  
+        return (Math.round(d["Number of Records"]*100)/100 + " %");  
     });
 
     svg.append("text")
     .attr("x", 6)
     .attr("y", -2)
     .attr("class", "label")
-    .text("Runs (86)");
+    .text("Father's education and Grades");
 
-    svg.append("text")
-    .attr("x", width-2)
-    .attr("y", height-6)
-    .attr("text-anchor", "end")
-    .attr("class", "label")
-    .text("At Bats (86)");
-
-    // adding vertical line
-    svg.append("line")
-    .attr("x1", 300)  //<<== change your code here
-    .attr("y1", 0)
-    .attr("x2", 305)  //<<== and here
-    .attr("y2", height - margin.top - margin.bottom)
-    .style("stroke-width", 2)
-    .style("stroke", "red")
-    .style("fill", "none");
-    // adding Vertical line end
+    svg.append('text')
+    .attr('class', 'label')
+    .attr('x', -(height) - margin)
+    .attr('y', margin)
+    .attr('transform', 'translate(480 180)')
+    .attr('text-anchor', 'end')
+    .text('Grades')
 
     var legend = svg.selectAll(".legend")
         .data(color.domain())
@@ -115,6 +108,7 @@ d3.csv("Baseball.csv", function(error, data) {
 
     legend.append("rect")
         .attr("x", width)
+        //.attr("y", height)
         .attr("width", 12)
         .attr("height", 12)
         .style("fill", color);
@@ -133,7 +127,7 @@ d3.csv("Baseball.csv", function(error, data) {
         .style("opacity", 1);
         d3.selectAll(".bubble")
         .style("opacity", 0.1)
-        .filter(function(d) { return d["team86"] == type; })
+        .filter(function(d) { return d["Number of Students"]; })
         .style("opacity", 1);
     })
     .on("mouseout", function(type) {
