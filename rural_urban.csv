@@ -1,3 +1,5 @@
-State,D,C,B,A
-Rural,9,50,36,5
-Urban,14,60,24,2
+State,Rural,Urban
+A,9,14
+B,50,60
+C,36,24
+D,5,2

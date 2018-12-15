@@ -1,10 +1,10 @@
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    width = 660 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
 
 // set the ranges
-var x = d3.scaleTime().range([0, width]);
+var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
 // define the 1st line
@@ -20,7 +20,7 @@ var valueGoodLine = d3.line()
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svg = d3.select("#chart-line1").append("svg")
+var svgFamRelation = d3.select("#chart-line1").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -42,26 +42,51 @@ d3.csv("FamRelation.csv", function(error, data) {
   y.domain([0,20]);
 
   // Add the valueBadLine path.
-  svg.append("path")
+  svgFamRelation.append("path")
       .data([data])
       .attr("class", "line")
       .attr("d", valueBadLine);
 
   // Add the valueGoodLine path.
-  svg.append("path")
+  svgFamRelation.append("path")
       .data([data])
       .attr("class", "line")
       .style("stroke", "red")
       .attr("d", valueGoodLine);
 
   // Add the X Axis
-  svg.append("g")
+  svgFamRelation.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
   // Add the Y Axis
-  svg.append("g")
+  svgFamRelation.append("g")
       .call(d3.axisLeft(y));
 
-  bind("#chart-line1");
+  var legend = d3.select('svg')
+    .append("g")
+    .selectAll("g")
+    .data(color.domain())
+    .enter()
+    .append('g')
+    .attr('class', 'legend')
+    .attr('transform', function(d, i) {
+        var height = 500;
+        var x = 500;
+        var y = i * height;
+        return 'translate(' + x + ',' + y + ')';
+    });
+  
+  legend.append('rect')
+    .attr('width', 50)
+    .attr('height', 50)
+    .style('fill', color)
+    .style('stroke', color);
+
+  legend.append('text')
+    .attr('x', 50 + 40)
+    .attr('y', 50 - 40)
+    .text(function(d) { return d; });
+
+  //bind("#chart-line1");
 });
