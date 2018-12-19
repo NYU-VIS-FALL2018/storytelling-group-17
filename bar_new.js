@@ -1,5 +1,5 @@
 var svg = d3.select("#total_bar"),
-    margin = {top: 40, right: 40, bottom: 40, left: 60},
+    margin = {top: 30, right: 40, bottom: 20, left: 60},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
   
@@ -9,7 +9,7 @@ var x = d3.scaleBand().rangeRound([0, width]).padding(0.4),
     y = d3.scaleLinear().rangeRound([height, 0]);
   
 var colours = d3.scaleOrdinal()
-    .range(["#6F257F", "#CA0D59"]);
+    .range(["#3577AF"]);
 
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -24,6 +24,7 @@ d3.json("total.json", function(error, data) {
         .attr("class", "axis axis--x")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x));
+
         
 
     g.append("g")
@@ -56,24 +57,24 @@ d3.json("total.json", function(error, data) {
         })
             .on("mouseout", function(d){ tooltip.style("display", "none");});
             
-        var legend = g.append("g")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", 13)
-            .attr("text-anchor", "end")
-            .selectAll("g")
-            .data("ABCD")
-            .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+        // var legend = g.append("g")
+        //     .attr("font-family", "sans-serif")
+        //     .attr("font-size", 13)
+        //     .attr("text-anchor", "end")
+        //     .selectAll("g")
+        //     .data("ABCD")
+        //     .enter().append("g")
+        //     .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-            legend.append("rect")
-                .attr("x", width - 19)
-                .attr("width", 19)
-                .attr("height", 19)
-                .attr("fill", colours);
+        //     legend.append("rect")
+        //         .attr("x", width - 19)
+        //         .attr("width", 19)
+        //         .attr("height", 19)
+        //         .attr("fill", colours);
 
-            legend.append("text")
-                .attr("x", width - 24)
-                .attr("y", 9.5)
-                .attr("dy", "0.32em")
-                .text(function(d) { return d; });
+        //     legend.append("text")
+        //         .attr("x", width - 24)
+        //         .attr("y", 9.5)
+        //         .attr("dy", "0.32em")
+        //         .text(function(d) { return d; });
     });

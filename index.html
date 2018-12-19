@@ -107,54 +107,87 @@
         
     </style>
     <body>
-    <div style="background:#cce6ff">
-        <div style="margin: 20px 240px; padding:10px 10px;background:white">
-            <h1>What makes student performing well?</h1>
+     <!-- <div style="background:#cce6ff"> -->
+        <div style="margin: 20px 120px; padding:10px 10px;background:white">
+            <h1>What makes students perform well?</h1>
             <p>In a world of equitable education for all, it is surprising that these students have been relegated to near abandonment. While their dominant culture or high aptitude peers have been transitioned into college bound tracks and advanced courses, students have simply slipped into despair due to a quagmire of issues: learning disabilities, low-socioeconomic status, broken homes, behavioral struggles and constant moving between schools.</p>
             <p>Wondering how we could improve overall student motivation and self-concept, we came across the idea of exploring our dataset of students performance for two portuguese schools and analysing the outbound factors that contribute to their performance. </p>
-            <p>While looking at the overall distribution of grades, we got the following results:</p>
+            <p>Considering this as multi-step analysis task, we started by looking at the bigger picture related to grades of all the students from these two schools. While looking at the overall distribution of grades, we got the following results:</p>
             
             <div class="center_box">
                 <script src="https://d3js.org/d3.v4.min.js"></script>
-                <svg width="460" height="450" id="total_bar"> </svg>     
+                <svg width="460" height="440" id="total_bar"> </svg>     
                 <script src="bar_new.js" charset="utf-8"></script>
             </div>    
-            
-            <p>Of course, there are are multiple factors that would impact a students performance. However, we wanted to take into consideration some of the major factors that would be very essential for a students performance such as their background.
+            <p>As it can be seen, on an average, students have been doing good on a bigger picture, but we need to explore further to see if it is consistent throughout or is it a case of extremes looking good on an average basis.
+                </p>
+            <p>Now, there are multiple factors that would impact a student’s performance. However, we wanted to take into consideration some of the major factors that would be very essential for a student’s performance such as their geographical background, family background. 
+                </p>
+            <p>Peeling the layers one by one, we first want to check if where students come from has an impact on his/her performance. The two things that come into our mind when we think about background is a person’s hometown (geographical factor) and their family background. 
             </p>
-            <p>Peeling the layers one by one, we first want to check if where students come from has an impact on his/her performance. The two things that come into our mind when we think about background is a person’s hometown and their family background.</p>
+            <p>We went ahead and first segregated students on the basis of their geographical location and compared how student’s performance vary when they come from an urban or a rural hometown. 
+                </p>
             
             <div class="mainView">
                 <div>
-                    <p>While thinking about background, we went ahead and compared how
-                        <span style=font-weight:bold> students performance vary when they come from an urban or a rural hometown. 
-                        </span>
-                    </p>
                         <div class="center_box">
                         <script src="https://d3js.org/d3.v4.min.js"></script>
-                        <svg width="550" height="550"  id="old"></svg>
+                        <svg width="500" height="500"  id="old"></svg>
                         <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
                         <script src="bar.js" charset="utf-8"></script>
                     </div>
                 </div>
+                <p>As it can be seen from the graph above, there seems to be a clear dominance by one of the types in the top two grades and the lower two. Students from urban hometown have a clear dominance when it comes to scoring ‘A’ or ‘B’ grade with about 75% of urban students getting either of these grades when only about 58% rural students get either of these grades. 
+                    </p>
             </div>
                 <div id="chart-scatter">
-                    <p>To dig further, we wanted to see, if having educated parents makes an impact on students performace. For that reason, we
-                        comapared a students overall performance from 1 to 20 and if they had educated father and mother
+                    <p>Now, although we took a look at bigger picture in terms of hometown, it all starts with the home and how favorable the environment is at the home. So, we dig further to see what impact parent’s education has on student’s performance. For that reason, we compared a student’s overall performance from 1 to 20 (higher the better) and if they had educated father and mother. 
+
                     </p>
                     <script src="//d3js.org/d3.v4.0.0-alpha.35.min.js"></script>
                     <script src="Scatter2.js" charset="utf-8"></script>
+
+                    <p>Now, from the figure below we can see that, for urban, both the median and the average (by looking at the density around scores) of the student’s score is higher when the parents are educated. The median is around 15 when the parents are educated whereas it is a just a little higher than 13 when the parents are uneducated.
+                        </p>
+
+                    <p>Also, for rural, both the median and the average (by looking at the density around scores) of the student’s score is higher when the parents are educated. The median is around 13 when the parents are educated whereas it is a just a little higher than 10 when the parents are uneducated.
+                        </p>
                 </div>
+                <div id="chart-scatterRural">
+                    <script src="//d3js.org/d3.v4.0.0-alpha.35.min.js"></script>
+                    <script src="ScatterRural.js" charset="utf-8"></script>
+                    <p>So, from the difference between these medians, it can be seen that relatively the parent’s education in rural areas has a higher impact on students’ performance than those compared to urban.
+                        </p>
+                </div>
+
+                <p>Now, it’s not just that the education of parent’s directly impacts student’s performance, their relationship with them in terms of understanding and in terms of congruity of thought is equally important for them to do good.
+                        </p>
+
+                <p>So, we dig deeper to see the impact of student’s relationship and understanding with parents on their performance. Again, we scale student’s score on a scale of 1-20 (higher the better) on the basis of their performance if they have a good or a bad relationship.
+                    </p>
+                <div style="background:white">
+                    <div style="float:left;">
+                            <svg width="500" height="500" id="idBarRelRural"></svg>
+                            <script src="https://d3js.org/d3.v4.min.js"></script>
+                            <script src="barRelRural.js" charset="utf-8"></script>
+                    </div>
+                    <div style="float:right;">
+                            <svg width="500" height="500" id="idBarRelUrban"></svg>
+                            <script src="https://d3js.org/d3.v4.min.js"></script>
+                            <script src="barRelUrban.js" charset="utf-8"></script>
+                    </div>  
                 <div style="float:left;">
-                        <svg width="550" height="550" id="idBarRelRural"></svg>
-                        <script src="https://d3js.org/d3.v4.min.js"></script>
-                        <script src="barRelRural.js" charset="utf-8"></script>
+                <p>From the figures, we can see that, for urban, the median of the student’s score is higher when the relationship with parents is good. The median is around 14 when the relationship is good whereas it is around 12.5 when the relationship is bad. Almost similar is the scenario in rural environment, the median is around 13.5 when the relationship is good whereas it is around 11 when the relationship is bad.
+                        Even in this scenario, it can be seen that relatively the relationship with parents in rural areas has a higher impact on students’ performance than those compared to urban scenario.
+                        </p>
+                
+                
+                <h2>Conclusion:</h2>
+                <p>During these times of such higher competition, the importance of education and student’s performance has reached new heights. Although, the availability of resources related to education are different when it comes to urban and rural areas and thus, the importance of other factors becomes really vital when it comes to student’s performance. 
+                        With the help of all the analysis done in this task, we concluded that these other factors such as parent’s education, student’s relationship with parents play a very key role especially in rural areas and their student’s performance and it makes sense logically as during phases of fewer resources, it is the support from parent’s which is a big aid and a really important resource in terms of guidance provided.
+                        </p>
                 </div>
-                <div style="float:right;">
-                        <svg width="550" height="550" id="idBarRelUrban"></svg>
-                        <script src="https://d3js.org/d3.v4.min.js"></script>
-                        <script src="barRelUrban.js" charset="utf-8"></script>
-                </div>  
+
 
         </div>
     </div>

@@ -2,7 +2,7 @@
 // Draw Bar Chart
 function drawBarChart() {
   var svg = d3.select("#idBarRelUrban"),
-  margin = {top: 40, right: 70, bottom: 40, left: 70},
+  margin = {top: 40, right: 70, bottom: 80, left: 70},
   width = +svg.attr("width") - margin.left - margin.right,
   height = +svg.attr("height") - margin.top - margin.bottom,
   g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -20,7 +20,7 @@ function drawBarChart() {
   var formatPercent = d3.format("%")
 
   var z = d3.scaleOrdinal()
-      .range(["#cc00cc", "#5200cc","#98abc5", "#8a89a6", "#7b6888"]);
+      .range(["#BF423F ","#0066cc"]);
       //.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
   d3.csv("FamRelUrban.csv", function(d, i, columns) {
           for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
@@ -78,21 +78,30 @@ function drawBarChart() {
               //.text("Performance - Rural Urban");
 
 
-        //   g.append("g")
-        //       .append('text')
-        //       .attr('class', 'label')
-        //       .attr('x', -(height) - margin)
-        //       .attr('y', margin)
-        //       .attr('transform', 'rotate(-90) translate(-96 -50)')
-        //       .attr('text-anchor', 'end')
-        //       .text('Number of Students (%)')
+          g.append("g")
+              .append('text')
+              .attr('class', 'label')
+              .attr('x', -(height) - margin)
+              .attr('y', margin)
+              .attr('transform', 'rotate(-90) translate(-96 -50)')
+              .attr('text-anchor', 'end')
+              .text('Number of Students (%)')
 
-        //   g.append('text')
-        //       .attr('x', width / 2 + margin)
-        //       .attr('y', 40)
-        //       .attr('transform', 'translate(200 470)')
-        //       .attr('text-anchor', 'middle')
-        //       .text('Grades')
+          g.append('text')
+              .attr('x', 180)
+              .attr('y', 430)
+              .attr('text-anchor', 'middle')
+              .text('Grades')
+              .style("font-size", "16px");
+
+          g.append("text")
+              .attr("x", 6)
+              .attr("y", -2)
+              .attr("class", "label")
+              .text("Urban - Family Relationship")
+              .style("font-size", "16px");
+          
+          
 
           var legend = g.append("g")
               .attr("font-family", "sans-serif")

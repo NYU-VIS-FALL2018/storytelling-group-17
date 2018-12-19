@@ -20,7 +20,7 @@ function drawBarChart() {
     var formatPercent = d3.format("%")
 
     var z = d3.scaleOrdinal()
-        .range(["#cc00cc", "#5200cc","#98abc5", "#8a89a6", "#7b6888"]);
+        .range(["#F8D047","#003399"]);
         //.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
     d3.csv("rural_urban.csv", function(d, i, columns) {
             for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];

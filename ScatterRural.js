@@ -2,7 +2,7 @@ var margin = { top: 90, right: 90, bottom: 90, left: 120 };
 var width = 1000 - margin.left - margin.right;
 var height = 650 - margin.top - margin.bottom;
 
-var svgFamEdu = d3.select("#chart-scatter")
+var svgRuralFamEdu = d3.select("#chart-scatterRural")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -37,7 +37,7 @@ var yAxis = d3.axisLeft()
 
 var color = d3.scaleCategory20();
 
-d3.csv("fedu.csv", function(error, data) {
+d3.csv("ParentEduRrual.csv", function(error, data) {
     console.log(data);
     // data pre-processing
     data.forEach(function(d) {
@@ -56,17 +56,17 @@ d3.csv("fedu.csv", function(error, data) {
     return d.r;
     })).nice();
 
-    svgFamEdu.append("g")
+    svgRuralFamEdu.append("g")
     .attr("transform", "translate(0," + height + ")")
     .attr("class", "x axis")
     .call(xAxis);
 
-    svgFamEdu.append("g")
+    svgRuralFamEdu.append("g")
     .attr("transform", "translate(0,0)")
     .attr("class", "y axis")
     .call(yAxis);
 
-    var group = svgFamEdu.selectAll("g.bubble")
+    var group = svgRuralFamEdu.selectAll("g.bubble")
     .data(data)
     .enter().append("g")
     .attr("class", "bubble")
@@ -81,7 +81,7 @@ d3.csv("fedu.csv", function(error, data) {
         display = this.checked ? "inline" : "none";
   
   
-        svgFamEdu.selectAll("g.bubble")
+        svgRuralFamEdu.selectAll("g.bubble")
             .filter(function(d) {return selectedParentEducation == d.Fedu;})
             .attr("display", display);
     });
@@ -102,14 +102,14 @@ d3.csv("fedu.csv", function(error, data) {
         return (Math.round(d["Number of Records"]*100)/100 + " %");  
     }); */
 
-    svgFamEdu.append("text")
+    svgRuralFamEdu.append("text")
     .attr("x", 6)
     .attr("y", -2)
     .attr("class", "label")
-    .text("Urban - Parents' education and Grades")
+    .text("Rural - Parents' education and Grades")
     .style("font-size", "20px");
 
-    svgFamEdu.append('text')
+    svgRuralFamEdu.append('text')
     .attr('class', 'label')
     .attr("x", 0)   //middle        // .attr('x', -(height) - margin)
     .attr("y", height - margin.top*1.5)     // .attr('y', margin)
@@ -122,17 +122,17 @@ d3.csv("fedu.csv", function(error, data) {
     // +add vertical line
     //source: https://stackoverflow.com/questions/26418777/draw-a-vertical-line-representing-the-current-date-in-d3-gantt-chart
     // Parent Educated
-    svgFamEdu.append("line")
-        .attr("x1", 530)
+    svgRuralFamEdu.append("line")
+        .attr("x1", 480)
         .attr("y1", height - margin.top*3.85)  //top point
-        .attr("x2", 530)
+        .attr("x2", 480)
         .attr("y2", height - margin.top*3.15) //bottom point
         .style("stroke-width", 3)
         .style("stroke", "red")
         .style("fill", "none");
     
-    svgFamEdu.append("text")
-        .attr("x", 530)
+    svgRuralFamEdu.append("text")
+        .attr("x", 480)
         .attr("y", height - margin.top*3.9)
         .text("Average")
         .style("font-size", "10px");
@@ -141,17 +141,17 @@ d3.csv("fedu.csv", function(error, data) {
     // +add vertical line
     //source: https://stackoverflow.com/questions/26418777/draw-a-vertical-line-representing-the-current-date-in-d3-gantt-chart
     // Parent Uneducated
-    svgFamEdu.append("line")
-        .attr("x1", 480)
+    svgRuralFamEdu.append("line")
+        .attr("x1", 350)
         .attr("y1", height - margin.top*2.1)  //top point
-        .attr("x2", 480)
+        .attr("x2", 350)
         .attr("y2", height - margin.top*1.4) //bottom point
         .style("stroke-width", 3)
         .style("stroke", "red")
         .style("fill", "none");
 
-    svgFamEdu.append("text")
-        .attr("x", 440)
+    svgRuralFamEdu.append("text")
+        .attr("x", 350)
         .attr("y", height - margin.top*2.15)
         .text("Average")
         .style("font-size", "10px");
@@ -159,7 +159,7 @@ d3.csv("fedu.csv", function(error, data) {
 
     
     /*
-    var legend = svgFamEdu.selectAll(".legend")
+    var legend = svgRuralFamEdu.selectAll(".legend")
         .data(color.domain())
     .enter().append("g")
         .attr("class", "legend")
