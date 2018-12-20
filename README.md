@@ -10,6 +10,6 @@ Group X (Online: Group Y)
 In this project we ...
 
 ## More
-[DEMO](https://nyu-vis-fall2018.github.io/project-template/)
+[DEMO](https://nyu-vis-fall2018.github.io/storytelling-group-17-students-performance/)
 
 [Project Descrioption](project.pdf)
