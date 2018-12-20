@@ -134,7 +134,7 @@ d3.csv("ParentEduRrual.csv", function(error, data) {
     svgRuralFamEdu.append("text")
         .attr("x", 480)
         .attr("y", height - margin.top*3.9)
-        .text("Average")
+        .text("Median")
         .style("font-size", "10px");
     // -add vertical line
 
@@ -153,7 +153,7 @@ d3.csv("ParentEduRrual.csv", function(error, data) {
     svgRuralFamEdu.append("text")
         .attr("x", 350)
         .attr("y", height - margin.top*2.15)
-        .text("Average")
+        .text("Median")
         .style("font-size", "10px");
     // -add vertical line
 

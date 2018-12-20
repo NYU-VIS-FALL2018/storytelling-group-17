@@ -1,6 +1,6 @@
 [
-    {"area" : "A", "value": 50},
-    {"area" : "B", "value": 60},
-    {"area" : "C", "value": 80},
-    {"area" : "D", "value": 20}
+    {"area" : "A", "value": 12.6},
+    {"area" : "B", "value": 55.0},
+    {"area" : "C", "value": 26.8},
+    {"area" : "D", "value": 5.6}
 ]
