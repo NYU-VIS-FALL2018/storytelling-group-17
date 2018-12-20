@@ -3,7 +3,7 @@
 
 Group 17 
 
-![Screenhot](screenshot.jpg)
+![Screenhot](https://github.com/NYU-VIS-FALL2018/storytelling-group-17-students-performance/blob/master/Screen%20Shot%201.png)
 
 
 ## About
