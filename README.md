@@ -5,6 +5,7 @@ Group 17
 
 ![Screenhot](https://github.com/NYU-VIS-FALL2018/storytelling-group-17-students-performance/blob/master/Screen%20Shot%201.png)
 ![Screenhot](https://github.com/NYU-VIS-FALL2018/storytelling-group-17-students-performance/blob/master/Screen%20Shot%202.png) 
+![Screenhot](https://github.com/NYU-VIS-FALL2018/storytelling-group-17-students-performance/blob/master/3.png)
 
 ## About
 Project Description:
