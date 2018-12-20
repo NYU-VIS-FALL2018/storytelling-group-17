@@ -1,13 +1,17 @@
 # Project Name
-**Authors**: Jhon Doe (jd2545), Mark Smith (ms4568)
+**Authors**: Binal Modi (bjm470) and Apurv Srivastav (as11419)
 
-Group X (Online: Group Y) 
+Group 17 
 
 ![Screenhot](screenshot.jpg)
 
 
 ## About
-In this project we ...
+Project Description
+Project Goal: 
+Using data collected from Center for Machine Learning and Intelligent Systems, we aim to explore the dataset with different attributes of high performing students and poor performing students to understand the roles of these associated attributes in a student’s performance. 
+
+In our project, we will be showing how various outbound factors play a role in students performance.To measure performance, we will consider average grades combining maths and Portuguese (native language) subjects’ grades drawn from two Portuguese schools.
 
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/storytelling-group-17-students-performance/)
