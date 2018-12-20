@@ -12,4 +12,4 @@ In this project we ...
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/storytelling-group-17-students-performance/)
 
-[Project Descrioption](project.pdf)
+[Project Descrioption](https://github.com/NYU-VIS-FALL2018/storytelling-group-17-students-performance/blob/master/Project%20report.pdf)
