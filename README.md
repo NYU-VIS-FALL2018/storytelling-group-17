@@ -17,4 +17,4 @@ In our project, we will be showing how various outbound factors play a role in s
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/storytelling-group-17-students-performance/)
 
-[Project Descrioption](https://github.com/NYU-VIS-FALL2018/storytelling-group-17-students-performance/blob/master/Project%20report.pdf)
+[Project Description](https://github.com/NYU-VIS-FALL2018/storytelling-group-17-students-performance/blob/master/Project%20report.pdf)
